@@ -2,17 +2,32 @@
 
 public class MoveBG : MonoBehaviour
 {
-    [SerializeField]
-    private float fallSpeed = 10;
-    public static bool sp = true;
+    [SerializeField] private MeshRenderer BGMesh;
 
-    void Update()
+    [SerializeField] private float BGSpeed = 0.76f;
+
+    private Vector2 BGOffset;
+
+    private void Awake()
     {
-        if (transform.position.y < -15)
-        {
-            sp = true;
-            Destroy(gameObject);
-        }
-        transform.position -= new Vector3(0, fallSpeed * Time.deltaTime, 0);
+        if (BGMesh) BGOffset = BGMesh.sharedMaterial.GetTextureOffset("_MainTex");
+        BGSpeed = 0.76f;
+    }
+    private void Move(MeshRenderer mesh, Vector2 savedOffset, float speed)
+    {
+        Vector2 offset = Vector2.zero;
+        float tmp = Mathf.Repeat(Time.time * speed, 1);
+        offset = new Vector2(savedOffset.x, tmp);
+        mesh.sharedMaterial.SetTextureOffset("_MainTex", offset);
+    }
+
+    private void Update()
+    {
+        if (!Player.Lose) Move(BGMesh, BGOffset, BGSpeed);
+    }
+
+    private void OnDisable()
+    {
+        if (BGMesh) BGMesh.sharedMaterial.SetTextureOffset("_MainTex", BGOffset);
     }
 }

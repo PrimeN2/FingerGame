@@ -3,32 +3,27 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public GameObject restart;
-    public GameObject menu;
-    public static bool lose = false;
-    public static int points = 0;
-    public Text point;
+    public static int Points { get; set; }
+    public static bool Lose { get; set; }
+
+    [SerializeField] private GameObject restart;
+    public GameObject Restart { get => restart; }
+
+    [SerializeField] private GameObject menu;
+    public GameObject Menu { get => menu; }
+
+    [SerializeField] private Text point;
+    public Text Point { get => point; }
 
     private void Awake()
     {
-        lose = false;
-        points = 0;
+        Points = 0;
+        Lose = false;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Respawn")
-        {
-            lose = true;
-            restart.SetActive(true);
-            menu.SetActive(true);
-        }
-        if (other.gameObject.tag == "Point")
-        {
-            points++;
-            Destroy(other.gameObject);
-            point.text = "Points:" + points.ToString();
-            // Мой первый, и скорее всего последний комент в этом коде(
-}
+        Let currentTypeOfLet = other.gameObject.GetComponent<FallDown>().CurrentTypeOfLet;
+        currentTypeOfLet.Accept(new PlayerCollisionHandling(), other.gameObject, other);
     }
 }

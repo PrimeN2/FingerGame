@@ -1,38 +1,88 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnLet : MonoBehaviour
 {
-    public GameObject[] let;
-    public GameObject point;
-    public GameObject BG;
+    [SerializeField] private GameObject letPrefab;
+    //Puddle всегда в последнем элементе
+    [SerializeField] private List<Let> letSetting;
+    [SerializeField] private int poolCount;
 
-    private void SpawnObject(GameObject obj) => Instantiate(obj, 
-                                                            new Vector2(Random.Range(-2.5f, 2.5f), 5.6f), 
-                                                            Quaternion.identity);
-    void Start()
+    public static Dictionary<GameObject, FallDown> Lets = new Dictionary<GameObject, FallDown>();
+    private Queue<GameObject> currentLet;
+
+    public static float DeleyOfRespawn = 1f;
+
+    private void Awake()
     {
+        FallDown.FallSpeed = 9.5f;
+    }
+    private void Start()
+    {
+        Lets = new Dictionary<GameObject, FallDown>();
+        currentLet = new Queue<GameObject>();
+
+        for (int i = 0; i < poolCount; ++i)
+        {
+            var prefab = Instantiate(letPrefab);
+            prefab.transform.SetParent(transform, true);
+            var script = prefab.GetComponent<FallDown>();
+            prefab.SetActive(false);
+            Lets.Add(prefab, script);
+            currentLet.Enqueue(prefab);
+        }
         StartCoroutine(Spawn());
     }
-
-    private void Update()
+    private void ReturnLet(GameObject _let, Collider2D _colliderType, Let _currentTypeOfLet)
     {
-        if(MoveBG.sp)
-        {
-            Instantiate(BG, new Vector3(0, 15, 10), Quaternion.identity);
-            MoveBG.sp = false;
-        }
+        _colliderType.enabled = false;
+        _let.transform.position = transform.position;
+        _let.SetActive(false);
+        currentLet.Enqueue(_let);
     }
     IEnumerator Spawn()
-    {
-        while (!Player.lose)
+    { 
+        while (!Player.Lose)
         {
-            int f = Random.Range(0, 4);
-            if (f == 0)
-                SpawnObject(point);
-            else
-                SpawnObject(let[0]);
-            yield return new WaitForSeconds(0.5f);
+            if(currentLet.Count > 0)
+            {
+                var let = currentLet.Dequeue();
+                var script = Lets[let];
+                let.SetActive(true);
+
+                int rand = Random.Range(0, letSetting.Count);
+                
+                if (!canSpawnNewPuddle()) rand = Random.Range(0, letSetting.Count - 1);
+                script.Init(letSetting[rand]);
+
+                float xPosition = Random.Range(-ControllPlayer.Border, ControllPlayer.Border);
+                let.transform.position = new Vector2(xPosition, transform.position.y);
+            }
+            yield return new WaitForSeconds(DeleyOfRespawn);
         }
     }
+    private bool canSpawnNewPuddle()
+    {
+        int finalBalanceOfPoints = Player.Points;
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<FallDown>().CurrentTypeOfLet is Debuff)
+            {
+                finalBalanceOfPoints -= 1;
+            }
+        }
+        return finalBalanceOfPoints > 0 ? true : false;
+    }
+    private void OnEnable()
+    {
+        FallDown.OnEnemyOverFliew += ReturnLet;
+        PlayerCollisionHandling.OnLetTaken += ReturnLet;
+    }
+    private void OnDisable()
+    {
+        FallDown.OnEnemyOverFliew -= ReturnLet;
+        PlayerCollisionHandling.OnLetTaken -= ReturnLet;
+    }
 }
+

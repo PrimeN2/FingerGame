@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab06eac708e6a74fa77baa7957cfc39, type: 3}
+  m_Name: Puddle
+  m_EditorClassIdentifier: 
+  mainSprite: {fileID: 21300000, guid: 38f5806bd5389484c999dabddc73a5a1, type: 3}
+  typeCollider: 0
+  typeOfLet: 2
+  scale: {x: 0.3, y: 0.3, z: 1}
+  scaleCollider: {x: 4, y: 4}
+  offset: {x: -0.1, y: 0.25}
+  radius: 0

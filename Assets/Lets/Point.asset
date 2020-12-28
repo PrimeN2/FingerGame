@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4235ec484a0256a48aa198002896dfd0, type: 3}
+  m_Name: Point
+  m_EditorClassIdentifier: 
+  mainSprite: {fileID: 21300000, guid: c25ceb17ae2ccbb498ef4c71af7d24a1, type: 3}
+  typeCollider: 2
+  typeOfLet: 1
+  scale: {x: 0.2, y: 0.2, z: 1}
+  scaleCollider: {x: 0, y: 0}
+  offset: {x: -0.3, y: -0.2}
+  radius: 2.9
