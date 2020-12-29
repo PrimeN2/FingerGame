@@ -5,36 +5,36 @@ using UnityEngine;
 public class SpawnLet : MonoBehaviour
 {
     [SerializeField] private GameObject letPrefab;
-    //Puddle всегда в последнем элементе
+    [Tooltip("Puddle всегда в последнем элементе")]
     [SerializeField] private List<Let> letSetting;
     [SerializeField] private int poolCount;
 
-    public static Dictionary<GameObject, FallDown> Lets = new Dictionary<GameObject, FallDown>();
+    public static Dictionary<GameObject, LetKeeper> Lets = new Dictionary<GameObject, LetKeeper>();
     private Queue<GameObject> currentLet;
 
     public static float DeleyOfRespawn = 1f;
 
     private void Awake()
     {
-        FallDown.FallSpeed = 9.5f;
+        LetKeeper.FallSpeed = 9.5f;
     }
     private void Start()
     {
-        Lets = new Dictionary<GameObject, FallDown>();
+        Lets = new Dictionary<GameObject, LetKeeper>();
         currentLet = new Queue<GameObject>();
 
         for (int i = 0; i < poolCount; ++i)
         {
             var prefab = Instantiate(letPrefab);
             prefab.transform.SetParent(transform, true);
-            var script = prefab.GetComponent<FallDown>();
+            var script = prefab.GetComponent<LetKeeper>();
             prefab.SetActive(false);
             Lets.Add(prefab, script);
             currentLet.Enqueue(prefab);
         }
         StartCoroutine(Spawn());
     }
-    private void ReturnLet(GameObject _let, Collider2D _colliderType, Let _currentTypeOfLet)
+    private void ReturnLet(Let _currentTypeOfLet, Collider2D _colliderType, GameObject _let)
     {
         _colliderType.enabled = false;
         _let.transform.position = transform.position;
@@ -53,7 +53,7 @@ public class SpawnLet : MonoBehaviour
 
                 int rand = Random.Range(0, letSetting.Count);
                 
-                if (!canSpawnNewPuddle()) rand = Random.Range(0, letSetting.Count - 1);
+                if (!CanSpawnNewPuddle()) rand = Random.Range(0, letSetting.Count - 1);
                 script.Init(letSetting[rand]);
 
                 float xPosition = Random.Range(-ControllPlayer.Border, ControllPlayer.Border);
@@ -62,26 +62,25 @@ public class SpawnLet : MonoBehaviour
             yield return new WaitForSeconds(DeleyOfRespawn);
         }
     }
-    private bool canSpawnNewPuddle()
+    private bool CanSpawnNewPuddle()
     {
-        int finalBalanceOfPoints = Player.Points;
         foreach (Transform child in transform)
         {
-            if (child.gameObject.GetComponent<FallDown>().CurrentTypeOfLet is Debuff)
+            if (child.gameObject.GetComponent<LetKeeper>().CurrentTypeOfLet is Debuff)
             {
-                finalBalanceOfPoints -= 1;
+                return false;
             }
         }
-        return finalBalanceOfPoints > 0 ? true : false;
+        return true;
     }
     private void OnEnable()
     {
-        FallDown.OnEnemyOverFliew += ReturnLet;
+        LetKeeper.OnEnemyOverFliew += ReturnLet;
         PlayerCollisionHandling.OnLetTaken += ReturnLet;
     }
     private void OnDisable()
     {
-        FallDown.OnEnemyOverFliew -= ReturnLet;
+        LetKeeper.OnEnemyOverFliew -= ReturnLet;
         PlayerCollisionHandling.OnLetTaken -= ReturnLet;
     }
 }

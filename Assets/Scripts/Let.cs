@@ -2,6 +2,8 @@
 
 public abstract class Let : ScriptableObject
 {
+    public abstract void Accept(ILetVisitor visiter, GameObject currentObject, Collider2D currentCollider);
+
     public enum Colliders
     {
         Box,
@@ -26,6 +28,4 @@ public abstract class Let : ScriptableObject
 
     [SerializeField] private float radius;
     public float Radius { get => radius; protected set => radius = value; }
-
-    public abstract void Accept(ILetVisitor visiter, GameObject currentObject, Collider2D currentCollider);
 }

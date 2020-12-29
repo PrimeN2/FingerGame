@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Let currentTypeOfLet = other.gameObject.GetComponent<FallDown>().CurrentTypeOfLet;
+        Let currentTypeOfLet = other.gameObject.GetComponent<LetKeeper>().CurrentTypeOfLet;
         currentTypeOfLet.Accept(new PlayerCollisionHandling(), other.gameObject, other);
     }
 }

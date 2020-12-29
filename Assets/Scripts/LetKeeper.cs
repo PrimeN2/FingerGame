@@ -2,9 +2,9 @@
 using System;
 
 [RequireComponent(typeof(Collider2D))]
-public class FallDown : MonoBehaviour
+public class LetKeeper : MonoBehaviour
 {
-    public static event Action<GameObject, Collider2D, Let> OnEnemyOverFliew;
+    public static event Action<Let, Collider2D, GameObject> OnEnemyOverFliew;
     public Let CurrentTypeOfLet { get => currentTypeOfLet; }
     public static float FallSpeed { get => fallSpeed; set => fallSpeed = value; }
     private static float fallSpeed = 9.5f;
@@ -42,6 +42,6 @@ public class FallDown : MonoBehaviour
     private void Update()
     {
         transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
-        if (transform.position.y < -8) OnEnemyOverFliew?.Invoke(gameObject, currentCollider, currentTypeOfLet);
+        if (transform.position.y < -8) OnEnemyOverFliew?.Invoke(currentTypeOfLet, currentCollider, gameObject);
     }
 }

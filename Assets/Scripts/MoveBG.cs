@@ -4,14 +4,15 @@ public class MoveBG : MonoBehaviour
 {
     [SerializeField] private MeshRenderer BGMesh;
 
-    [SerializeField] private float BGSpeed = 0.76f;
+    public static float SpeedOfBG { get => speedOfBG; set => speedOfBG = value; }
+    [SerializeField] private static float speedOfBG = 0.76f;
 
     private Vector2 BGOffset;
 
     private void Awake()
     {
         if (BGMesh) BGOffset = BGMesh.sharedMaterial.GetTextureOffset("_MainTex");
-        BGSpeed = 0.76f;
+        speedOfBG = 0.76f;
     }
     private void Move(MeshRenderer mesh, Vector2 savedOffset, float speed)
     {
@@ -23,7 +24,7 @@ public class MoveBG : MonoBehaviour
 
     private void Update()
     {
-        if (!Player.Lose) Move(BGMesh, BGOffset, BGSpeed);
+        if (!Player.Lose) Move(BGMesh, BGOffset, speedOfBG);
     }
 
     private void OnDisable()
