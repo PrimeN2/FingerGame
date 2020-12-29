@@ -71,7 +71,7 @@ public class SpawnLet : MonoBehaviour
                 return false;
             }
         }
-        return true;
+        return Player.Points > 0 ? true : false;
     }
     private void OnEnable()
     {
