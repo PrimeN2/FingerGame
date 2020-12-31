@@ -4,9 +4,9 @@ using UnityEngine;
 public class SpeedLevelHandler : MonoBehaviour
 {
     [SerializeField] private PostProcessingHandling postProcessingHandling;
+    public static int CurrentCountPointOfNextLevelSpeed { get; set; }
     public int CountOfPointForNextLevelSpeed { get => countOfPointForNextLevelSpeed; }
     [SerializeField] private int countOfPointForNextLevelSpeed = 1;
-    public static int CurrentCountPointOfNextLevelSpeed { get; set; }
 
     [SerializeField] private int maxLevelSpeed = 5;
     private int currentLevelOfSpeed = 1;
@@ -22,7 +22,7 @@ public class SpeedLevelHandler : MonoBehaviour
         {
             currentLevelOfSpeed++;
             LetKeeper.FallSpeed *= 1.1f;
-            MoveBG.SpeedOfBG *= 1.1f;
+            MoveBG.TimeAccelerationFactor *= 1.1f;
             StartCoroutine(postProcessingHandling.IncreaseVignetting());
         }
     }

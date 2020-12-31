@@ -10,7 +10,7 @@ public class SpawnLet : MonoBehaviour
     [SerializeField] private int poolCount;
 
     public static Dictionary<GameObject, LetKeeper> Lets = new Dictionary<GameObject, LetKeeper>();
-    private Queue<GameObject> currentLet;
+    private Queue<GameObject> currentLetObject;
 
     public static float DeleyOfRespawn = 1f;
 
@@ -21,7 +21,7 @@ public class SpawnLet : MonoBehaviour
     private void Start()
     {
         Lets = new Dictionary<GameObject, LetKeeper>();
-        currentLet = new Queue<GameObject>();
+        currentLetObject = new Queue<GameObject>();
 
         for (int i = 0; i < poolCount; ++i)
         {
@@ -30,7 +30,7 @@ public class SpawnLet : MonoBehaviour
             var script = prefab.GetComponent<LetKeeper>();
             prefab.SetActive(false);
             Lets.Add(prefab, script);
-            currentLet.Enqueue(prefab);
+            currentLetObject.Enqueue(prefab);
         }
         StartCoroutine(Spawn());
     }
@@ -39,15 +39,15 @@ public class SpawnLet : MonoBehaviour
         _colliderType.enabled = false;
         _let.transform.position = transform.position;
         _let.SetActive(false);
-        currentLet.Enqueue(_let);
+        currentLetObject.Enqueue(_let);
     }
     IEnumerator Spawn()
     { 
         while (!Player.Lose)
         {
-            if(currentLet.Count > 0)
+            if(currentLetObject.Count > 0)
             {
-                var let = currentLet.Dequeue();
+                var let = currentLetObject.Dequeue();
                 var script = Lets[let];
                 let.SetActive(true);
 
@@ -66,7 +66,7 @@ public class SpawnLet : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            if (child.gameObject.GetComponent<LetKeeper>().CurrentTypeOfLet is Debuff)
+            if (child.gameObject.GetComponent<LetKeeper>().CurrentLet is Debuff)
             {
                 return false;
             }

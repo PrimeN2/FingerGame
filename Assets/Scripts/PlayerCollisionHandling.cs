@@ -9,20 +9,20 @@ public class PlayerCollisionHandling : ILetVisitor
     [SerializeField] private Player player = GameObject.Find("Finger_l").GetComponent<Player>();
     [SerializeField] private SpeedLevelHandler speedLevelHandler = GameObject.Find("Main Camera").GetComponent<SpeedLevelHandler>();
 
-    public void Visit(Point typeOfLet, GameObject currentObject, Collider2D currentCollider)
+    public void Visit(Point Let, GameObject currentObject, Collider2D currentCollider)
     {
-        OnLetTaken?.Invoke(typeOfLet, currentCollider, currentObject);
+        OnLetTaken?.Invoke(Let, currentCollider, currentObject);
         TryChangePoint(1); 
     }
-    public void Visit(Enemy typeOfLet, GameObject currentObject, Collider2D currentCollider)
+    public void Visit(Enemy Let, GameObject currentObject, Collider2D currentCollider)
     {
         Player.Lose = true;
         player.Restart.SetActive(true);
         player.Menu.SetActive(true);
     }
-    public void Visit(Debuff typeOfLet, GameObject currentObject, Collider2D currentCollider)
+    public void Visit(Debuff Let, GameObject currentObject, Collider2D currentCollider)
     {
-        OnLetTaken?.Invoke(typeOfLet, currentCollider, currentObject);
+        OnLetTaken?.Invoke(Let, currentCollider, currentObject);
         NewLevelHasBeenTaken?.Invoke();
         TryChangePoint(-1);
     }

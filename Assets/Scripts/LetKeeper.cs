@@ -5,16 +5,17 @@ using System;
 public class LetKeeper : MonoBehaviour
 {
     public static event Action<Let, Collider2D, GameObject> OnEnemyOverFliew;
-    public Let CurrentTypeOfLet { get => currentTypeOfLet; }
     public static float FallSpeed { get => fallSpeed; set => fallSpeed = value; }
     private static float fallSpeed = 9.5f;
-    private Let currentTypeOfLet;
+    public Let CurrentLet { get => currentLet; }
+    private Let currentLet;
+
     private Collider2D currentCollider;
 
     public void Init(Let _let)
     {
-        currentTypeOfLet = _let;
-        GetComponent<SpriteRenderer>().sprite = currentTypeOfLet.MainSprite;
+        currentLet = _let;
+        GetComponent<SpriteRenderer>().sprite = currentLet.MainSprite;
         switch (_let.TypeCollider)
         {
             case Let.Colliders.Box:
@@ -42,6 +43,6 @@ public class LetKeeper : MonoBehaviour
     private void Update()
     {
         transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
-        if (transform.position.y < -8) OnEnemyOverFliew?.Invoke(currentTypeOfLet, currentCollider, gameObject);
+        if (transform.position.y < -8) OnEnemyOverFliew?.Invoke(currentLet, currentCollider, gameObject);
     }
 }
