@@ -16,7 +16,8 @@ public class SpeedLevelHandler : MonoBehaviour
     {
         currentLevelOfSpeed = 1;
         CurrentCountPointOfNextLevelSpeed = 0;
-    }
+        IsMaxLevelSpeed = false;
+}
     private void OnLevelTaked()
     {
         if(currentLevelOfSpeed <= maxLevelSpeed)

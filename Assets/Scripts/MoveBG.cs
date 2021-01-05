@@ -12,8 +12,10 @@ public class MoveBG : MonoBehaviour
     private void Awake()
     {
         if (BGMesh) BGOffset = BGMesh.sharedMaterial.GetTextureOffset("_MainTex");
+        TimeAccelerationFactor = 1f;
         speedOfBG = 0.94f;
-    }
+        TimeT = 0f;
+}
     private void Move(MeshRenderer mesh, Vector2 savedOffset, float speed)
     {
         Vector2 offset = Vector2.zero;
