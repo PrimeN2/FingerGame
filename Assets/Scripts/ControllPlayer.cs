@@ -3,7 +3,7 @@
 public class ControllPlayer : MonoBehaviour
 {
     [SerializeField] private Transform player;
-    [SerializeField] private float speed = 12f;
+    [SerializeField] private float speed = 30f;
 
     private static float border = 0;
     public static float Border
@@ -26,7 +26,7 @@ public class ControllPlayer : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.x = mousePos.x > Border - 0.1f ? Border - 0.1f : mousePos.x;
             mousePos.x = mousePos.x < -(Border + 0.1f) ? -(Border + 0.1f) : mousePos.x;
-            player.position = Vector2.MoveTowards(player.position, new Vector2(mousePos.x, player.position.y), speed * Time.deltaTime);
+            player.position = Vector3.MoveTowards(player.position, new Vector3(mousePos.x, player.position.y, player.position.y), speed * Time.deltaTime);
         }
     }
 }

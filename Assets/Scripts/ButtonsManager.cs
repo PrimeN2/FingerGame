@@ -3,11 +3,16 @@ using UnityEngine;
 
 public class ButtonsManager : MonoBehaviour
 {
-    public void OnMouseDown()
+    public void OnPlayHandler()
     {
-        if (name == "Play") SceneManager.LoadScene("main");
-        else if (name == "Restart") SceneManager.LoadScene("main");
-        else if (name == "Exit") Application.Quit();
-        else if (name == "Menu") SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("main");
+    }
+    public void OnExitHandler()
+    {
+        Application.Quit();
+    }
+    public void OnMenuHandler()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }

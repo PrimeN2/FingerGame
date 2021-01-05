@@ -2,30 +2,27 @@
 
 public class MoveBG : MonoBehaviour
 {
+    public static float TimeAccelerationFactor { get; set; } = 1f;
+
     [SerializeField] private MeshRenderer BGMesh;
-
-    public static float SpeedBGScroll { get => speedOfBG; set => speedOfBG = value; }
-    [SerializeField] private static float speedOfBG = 0.755f;
-    public static float TimeAccelerationFactor { get => timeAccelerationFactor; set => timeAccelerationFactor = value; }
-    private static float timeAccelerationFactor = 0.01275f;
-    private float time = 0;
-
+    [SerializeField] private float speedOfBG = 0.94f;
+    private float TimeT = 0f;
     private Vector2 BGOffset;
 
     private void Awake()
     {
         if (BGMesh) BGOffset = BGMesh.sharedMaterial.GetTextureOffset("_MainTex");
-        speedOfBG = 0.755f;
+        speedOfBG = 0.94f;
     }
     private void Move(MeshRenderer mesh, Vector2 savedOffset, float speed)
     {
         Vector2 offset = Vector2.zero;
-        float tmp = Mathf.Repeat(time * speed, 1);
-        time += timeAccelerationFactor;
+        TimeT += TimeAccelerationFactor * Time.deltaTime;
+        float tmp = Mathf.Repeat(TimeT * speed, 1);
+        
         offset = new Vector2(savedOffset.x, tmp);
         mesh.sharedMaterial.SetTextureOffset("_MainTex", offset);
     }
-
     private void Update()
     {
         if (!Player.Lose) Move(BGMesh, BGOffset, speedOfBG);

@@ -22,7 +22,6 @@ public class SpawnLet : MonoBehaviour
     {
         Lets = new Dictionary<GameObject, LetKeeper>();
         currentLetObject = new Queue<GameObject>();
-
         for (int i = 0; i < poolCount; ++i)
         {
             var prefab = Instantiate(letPrefab);
@@ -57,7 +56,7 @@ public class SpawnLet : MonoBehaviour
                 script.Init(letSetting[rand]);
 
                 float xPosition = Random.Range(-ControllPlayer.Border, ControllPlayer.Border);
-                let.transform.position = new Vector2(xPosition, transform.position.y);
+                let.transform.position = new Vector3(xPosition, transform.position.y, -6);
             }
             yield return new WaitForSeconds(DeleyOfRespawn);
         }
@@ -71,7 +70,7 @@ public class SpawnLet : MonoBehaviour
                 return false;
             }
         }
-        return Player.Points > 0 ? true : false;
+        return !SpeedLevelHandler.IsMaxLevelSpeed ? true : false;
     }
     private void OnEnable()
     {

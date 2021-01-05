@@ -24,7 +24,6 @@ public class PlayerCollisionHandling : ILetVisitor
     {
         OnLetTaken?.Invoke(Let, currentCollider, currentObject);
         NewLevelHasBeenTaken?.Invoke();
-        TryChangePoint(-1);
     }
     private void TryChangePoint(int sign = 1)
     {
